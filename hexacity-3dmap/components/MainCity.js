@@ -32,14 +32,12 @@ export default function MainCity() {
   ];
   
   return (
-    <div className="mt-10 mx-auto w-[600px] h-[1000px] max-w-full sm:h-[300px] bg-black">
+    <div className="w-full h-[600px] bg-black">
       <Canvas camera={{ position: [0, 6, 10], fov: 45 }}>
         <ambientLight intensity={0.6} />
         <directionalLight position={[10, 10, 5]} />
-
         <group>
           <Map />
-
           <Building
             path="/models/centerCrystal.glb"
             position={[0, 9, 0]}
@@ -51,16 +49,17 @@ export default function MainCity() {
               key={index}
               path="/models/golem.glb"
               position={position}
-              scale={0.7}
+              scale={0.8}
               rotation={rotation}
             />
           ))}
-
+{/* 
           <Building
             path="/models/barrack.glb"
-            position={[80, 30, 0]}
-            scale={0.8}
-          />
+            position={[106, 26, 12]}
+            scale={1.0}
+            rotation={[0,-(Math.PI/1.5 ),0]}
+          /> */}
         </group>
 
         <OrbitControls />
