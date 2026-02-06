@@ -77,6 +77,50 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
     })
   }, [isActive])
 
+  const renderTowers = () => {
+    switch(areaName){
+      case 'building-area-1':
+        return <>
+              <primitive name="tower1"
+        object={darkTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
+      {isActive && (
+        <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
+          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
+        </Html>
+      )}
+
+      <primitive name="tower2" object={lightTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
+      {isActive && (
+        <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
+          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
+        </Html>
+      )}
+
+      <primitive name="tower3" object={lightTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
+      {isActive && (
+        <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
+          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
+        </Html>
+      )}
+
+      <primitive name="tower4" object={darkTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
+      {isActive && (
+        <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
+          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
+        </Html>
+      )}
+
+      <primitive name="tower5" object={darkTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
+      {isActive && (
+        <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
+          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
+        </Html>
+      )}
+        </>
+      // case ..
+    }
+  }
+
   return (
     <group
       ref={groupRef}
@@ -123,11 +167,13 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
           <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
         </Html>
       )}
+
+      {renderTowers()}
     </group>
   );
 }
 
-export default function Map() {
+export default function Map({ controlsRef }) {
   const [selectedGate, setSelectedGate] = useState("gate1");
   const [mapRotation, setMapRotation] = useState(0);
   const mapGroupRef = useRef();
@@ -190,6 +236,11 @@ export default function Map() {
 
       if (progress < 1) {
         requestAnimationFrame(animate);
+      } else {
+        // Reset camera azimuth angle after rotation completes
+        if (controlsRef?.current) {
+          controlsRef.current.reset();
+        }
       }
     };
 
@@ -224,7 +275,7 @@ export default function Map() {
       // Update controls
       controls.update();
     }
-  }, [mapRotation, controls]);
+  }, [mapRotation, controls, controlsRef]);
 
   // Check if building area should be visible
   const isHtmlVisible = (buildingName) => {

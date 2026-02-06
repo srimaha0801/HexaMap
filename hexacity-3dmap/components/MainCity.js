@@ -2,16 +2,17 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import Map from "./Map";
 import Building from "./Building";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function MainCity() {
-  const ref = useRef()
+  const ref = useRef();
+  const controlsRef = useRef();
 
   useEffect(() => {
     if (ref.current) {
-      console.log("ref data: ", ref.current.position)
+      console.log("ref data: ", ref.current.position);
     }
-  }, [ref])
+  }, [ref]);
 
   return (
     <div className="w-full h-[600px] bg-black">
@@ -20,7 +21,7 @@ export default function MainCity() {
         <directionalLight position={[5, 10, 5]} />
 
           <group name="main-city">
-            <Map />
+            <Map controlsRef={controlsRef} />
 
             {/* Center Crystal */}
             <Building
@@ -33,11 +34,12 @@ export default function MainCity() {
           </group>
 
         <OrbitControls 
+          ref={controlsRef}
           minDistance={150}
           maxDistance={400}
-          minPolarAngle={Math.PI / 4}
-          maxPolarAngle={Math.PI / 3}
-          minAzimuthAngle={Math.PI / 2}
+          minPolarAngle={Math.PI / 3}
+          maxPolarAngle={Math.PI / 2.2}
+          minAzimuthAngle={-Math.PI / 9}
           maxAzimuthAngle={Math.PI / 9}
           enablePan={false}
           enableDamping={true}
