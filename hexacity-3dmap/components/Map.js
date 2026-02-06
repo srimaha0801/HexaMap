@@ -3,6 +3,58 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import Building from "./Building";
 
+// Component to handle gate opacity
+function GateGroup({ gateName, isActive, children, ...props }) {
+  const groupRef = useRef();
+
+  useFrame(() => {
+    if (!groupRef.current) return;
+
+    groupRef.current.traverse((child) => {
+      if (child.isMesh && child.material) {
+        // Handle both single material and array of materials
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        
+        materials.forEach((material) => {
+          if (!material) return;
+          
+          if (!material.userData) {
+            material.userData = {};
+          }
+          
+          if (!material.userData.cloned) {
+            const clonedMaterial = material.clone();
+            clonedMaterial.userData.cloned = true;
+            clonedMaterial.transparent = true;
+            
+            if (Array.isArray(child.material)) {
+              const index = child.material.indexOf(material);
+              child.material[index] = clonedMaterial;
+            } else {
+              child.material = clonedMaterial;
+            }
+          }
+        });
+
+        // Update the opacity based on active state
+        const finalMaterials = Array.isArray(child.material) ? child.material : [child.material];
+        finalMaterials.forEach((mat) => {
+          if (mat) {
+            mat.opacity = isActive ? 1 : 0.2;
+            mat.needsUpdate = true;
+          }
+        });
+      }
+    });
+  });
+
+  return (
+    <group ref={groupRef} {...props}>
+      {children}
+    </group>
+  );
+}
+
 // Component to handle opacity for building groups
 function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTower, lightTower }) {
   const groupRef = useRef()
@@ -322,60 +374,59 @@ export default function Map() {
           isActive={isHtmlVisible("building-area6")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} />
 
         {/* Wall Gates */}
-        <group name="wall-area1" position={[-1, 35, 137]} rotation={[0, 0, 0]} scale={1}>
+        <GateGroup gateName="gate1" isActive={selectedGate === "gate1"} name="wall-area1" position={[-1, 35, 137]} rotation={[0, 0, 0]} scale={1}>
           <primitive object={wallGate.scene.clone()} scale={1} />
           <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
             outlineWidth={0.08} outlineColor="black" billboard>Gate 1</Text>
           <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
           <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
           <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
+        </GateGroup>
 
-        </group>
-
-        <group name="wall-area2" position={[117, 35, 71.5]} rotation={[0, Math.PI / 3, 0]} scale={1}>
+        <GateGroup gateName="gate2" isActive={selectedGate === "gate2"} name="wall-area2" position={[117, 35, 71.5]} rotation={[0, Math.PI / 3, 0]} scale={1}>
           <primitive object={wallGate.scene.clone()} scale={1} />
           <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
             outlineWidth={0.08} outlineColor="black" billboard>Gate 2</Text>
           <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
           <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
           <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
-        </group>
+        </GateGroup>
 
-        <group name="wall-area3" position={[117, 35, -65]} rotation={[0, 2 * Math.PI / 3, 0]} scale={1}>
+        <GateGroup gateName="gate3" isActive={selectedGate === "gate3"} name="wall-area3" position={[117, 35, -65]} rotation={[0, 2 * Math.PI / 3, 0]} scale={1}>
           <primitive object={wallGate.scene.clone()} scale={1} />
           <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
             outlineWidth={0.08} outlineColor="black" billboard>Gate 3</Text>
           <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
           <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
           <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
-        </group>
+        </GateGroup>
 
-        <group name="wall-area4" position={[1, 35, -137]} rotation={[0, Math.PI, 0]} scale={1}>
+        <GateGroup gateName="gate4" isActive={selectedGate === "gate4"} name="wall-area4" position={[1, 35, -137]} rotation={[0, Math.PI, 0]} scale={1}>
           <primitive object={wallGate.scene.clone()} scale={1} />
           <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
             outlineWidth={0.08} outlineColor="black" billboard>Gate 4</Text>
           <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
           <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
           <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
-        </group>
+        </GateGroup>
 
-        <group name="wall-area5" position={[-117, 35, -71.5]} rotation={[0, 4 * Math.PI / 3, 0]} scale={1}>
+        <GateGroup gateName="gate5" isActive={selectedGate === "gate5"} name="wall-area5" position={[-117, 35, -71.5]} rotation={[0, 4 * Math.PI / 3, 0]} scale={1}>
           <primitive object={wallGate.scene.clone()} scale={1} />
           <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
             outlineWidth={0.08} outlineColor="black" billboard>Gate 5</Text>
           <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
           <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
           <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
-        </group>
+        </GateGroup>
 
-        <group name="wall-area6" position={[-117, 35, 65]} rotation={[0, 5 * Math.PI / 3, 0]} scale={1}>
+        <GateGroup gateName="gate6" isActive={selectedGate === "gate6"} name="wall-area6" position={[-117, 35, 65]} rotation={[0, 5 * Math.PI / 3, 0]} scale={1}>
           <primitive object={wallGate.scene.clone()} scale={1} />
           <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
             outlineWidth={0.08} outlineColor="black" billboard>Gate 6</Text>
           <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
           <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
           <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
-        </group>
+        </GateGroup>
       </group>
     </>
   );
