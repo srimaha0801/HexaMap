@@ -145,12 +145,32 @@ export default function Map() {
 
     // Set camera control limits
     if (controls) {
+      // Zoom restrictions
       controls.minDistance = 150;
       controls.maxDistance = 400;
-      controls.maxPolarAngle = Math.PI / 2.2;
-      controls.minPolarAngle = Math.PI / 6;
-      controls.enablePan = true;
-      controls.panSpeed = 0.5;
+      
+      // Vertical angle restrictions (prevent upside down and top view)
+      // Math.PI/2 is 90 degrees (horizontal view)
+      controls.minPolarAngle = Math.PI / 3;    // 60 degrees (30 degrees from horizontal)
+      controls.maxPolarAngle = Math.PI / 2.2;  // ~82 degrees (8 degrees from horizontal)
+      
+      // Disable panning to prevent free movement
+      controls.enablePan = false;
+      
+      // Enable rotation but restrict it
+      controls.enableRotate = true;
+      
+      // Restrict horizontal rotation to ±20 degrees from current position
+      const maxOffset = Math.PI / 9; // 20 degrees
+      controls.minAzimuthAngle = -maxOffset;
+      controls.maxAzimuthAngle = maxOffset;
+      
+      // Enable damping for smoother control
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      
+      // Update controls
+      controls.update();
     }
   }, [mapRotation, controls]);
 

@@ -15,7 +15,7 @@ export default function MainCity() {
 
   return (
     <div className="w-full h-[600px] bg-black">
-      <Canvas camera={{ position: [0, 250, 330], fov: 45 }} ref={ref}>
+      <Canvas camera={{ position: [0, 250, 530], fov: 30 }} ref={ref}>
         <ambientLight intensity={1.3} />
         <directionalLight position={[5, 10, 5]} />
 
@@ -32,7 +32,17 @@ export default function MainCity() {
             />
           </group>
 
-        <OrbitControls />
+        <OrbitControls 
+          minDistance={150}
+          maxDistance={400}
+          minPolarAngle={Math.PI / 4}
+          maxPolarAngle={Math.PI / 3}
+          minAzimuthAngle={Math.PI / 2}
+          maxAzimuthAngle={Math.PI / 9}
+          enablePan={false}
+          enableDamping={true}
+          dampingFactor={0.05}
+        />
       </Canvas>
     </div>
   );
