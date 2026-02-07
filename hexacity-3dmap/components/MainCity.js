@@ -11,6 +11,7 @@ export default function MainCity() {
   const controlsRef = useRef();
   const [selectedGate, setSelectedGate] = useState("gate1");
   const [mapRotation, setMapRotation] = useState(0);
+  const [selectedTower, setSelectedTower] = useState(null);
 
   useEffect(() => {
     if (ref.current) {
@@ -48,10 +49,9 @@ export default function MainCity() {
 
 
   return (
-    <div className="w-full h-[300px] md:h-[600px] bg-black">
-      {/* <Html fullscreen> */}
-      <HexagonCompass selectedGate={selectedGate} onGateSelect={handleGateSelect} />
-      {/* </Html> */}
+    <div>
+
+            <HexagonCompass selectedGate={selectedGate} onGateSelect={handleGateSelect} />
 
       <div className="absolute top-[10%] md:top-[50%] left-5 z-[1000] -translate-y-1/2">
         <button
@@ -99,13 +99,62 @@ export default function MainCity() {
         </button>
       </div>
 
+            {/* Mobile Tower Popover at bottom */}
+      {selectedTower && (
+        <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-[2000] w-[90%] max-w-sm">
+          <div className="relative">
+            <button
+              onClick={() => setSelectedTower(null)}
+              className="absolute -top-2 -right-2 z-10 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold shadow-lg"
+            >
+              ×
+            </button>
+            <div className="w-full rounded-xl border border-yellow-400/40 bg-zinc-900/95 backdrop-blur-sm p-4 shadow-[0_0_20px_rgba(234,179,8,0.5)]">
+              <h2 className="text-center text-lg font-semibold text-yellow-300 mb-3">
+                {selectedTower.label}
+              </h2>
+              <div className="space-y-2 text-sm text-gray-200">
+                <div className="flex justify-between">
+                  <span className="flex items-center gap-2 text-yellow-400">Level</span>
+                  <span className="font-semibold">{selectedTower.level}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="flex items-center gap-2 text-red-500">Element</span>
+                  <span className="font-semibold">{selectedTower.element}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="flex items-center gap-2 text-blue-400">Attack</span>
+                  <span className="font-semibold">{selectedTower.attack}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="flex items-center gap-2 text-green-400">Defence</span>
+                  <span className="font-semibold">{selectedTower.defence}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+    <div className="w-full h-[300px] md:h-[600px] bg-black relative">      
+
+
+
       <Canvas camera={{ position: [0, 250, 530], fov: 30 }} ref={ref} className="mt-[25%] md:mt-auto">
         <ambientLight intensity={1.3} />
         <directionalLight position={[5, 15, 10]} />
 
         <group name="main-city">
 
-          <Map controlsRef={controlsRef} mapRotation={mapRotation} selectedGate={selectedGate} setMapRotation={setMapRotation} setSelectedGate={setSelectedGate} />
+          <Map 
+            controlsRef={controlsRef} 
+            mapRotation={mapRotation} 
+            selectedGate={selectedGate} 
+            setMapRotation={setMapRotation} 
+            setSelectedGate={setSelectedGate}
+            onTowerClick={setSelectedTower}
+          />
 
           {/* Center Crystal */}
           <Building
@@ -132,5 +181,7 @@ export default function MainCity() {
       </Canvas>
 
     </div>
+        </div>
+
   );
 }

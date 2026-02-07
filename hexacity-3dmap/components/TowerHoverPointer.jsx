@@ -16,13 +16,25 @@ export default function TowerHoverPointer({
   element = "Dark",
   attack = 75,
   defence = 50,
+  onTowerClick,
 }) {
   const [hovered, setHovered] = useState(false);
+
+  const handleClick = (e) => {
+    if (!isActive) return;
+    e.stopPropagation();
+    
+    // On mobile, trigger the click handler to show popover at bottom
+    if (onTowerClick) {
+      onTowerClick({ label, level, element, attack, defence });
+    }
+  };
 
   return (
     <group
       position={position}
       rotation={rotation}
+      onClick={handleClick}
       onPointerOver={(e) => {
         if (!isActive) return;
         e.stopPropagation();
@@ -48,15 +60,16 @@ export default function TowerHoverPointer({
         </Html>
       )}
 
+      {/* Desktop hover tooltip - hidden on mobile */}
       {isActive && hovered && (
         <Html
           position={[0, tooltipHeight, 0]}
           center
           distanceFactor={100}
-       occlude="raycast"
-  zIndexRange={[10, 0]}
+          occlude="raycast"
+          zIndexRange={[10, 0]}
         >
-          <div className="pointer-events-none">
+          <div className="pointer-events-none hidden md:block">
             <div className="w-56 z-[100] absolute rounded-xl border border-yellow-400/40 bg-zinc-900 p-4 shadow-[0_0_15px_rgba(234,179,8,0.35)]">
               
               {/* Title */}

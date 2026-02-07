@@ -59,11 +59,8 @@ function GateGroup({ gateName, isActive, children, ...props }) {
 }
 
 // Component to handle opacity for building groups
-function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTower, lightTower, fireTower, waterTower, windTower }) {
-  const groupRef = useRef()
-
-  // Hover popup
-  const [hoverTower1, setHoverTower1] = useState(false);
+function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTower, lightTower, fireTower, waterTower, windTower, onTowerClick }) {
+  const groupRef = useRef();
 
 
   useFrame(() => {
@@ -95,6 +92,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Fire Tower"
             pointerImg="/FIRE_3_red.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -104,6 +102,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Dark Tower"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -114,6 +113,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Light Tower"
             pointerImg="/Light_1_yellow.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -124,6 +124,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Fire Tower"
             pointerImg="/FIRE_3_red.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -134,6 +135,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Wind Tower"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
         </>
 
@@ -146,6 +148,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Dark Tower"
             pointerImg="/Water_2_blue.webp "
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -155,6 +158,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Water Tower"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -165,6 +169,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Dark Tower"
             pointerImg="/Water_2_blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -175,6 +180,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Dark Tower"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -185,6 +191,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Water Tower"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
         </>
 
@@ -197,6 +204,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 1"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -206,6 +214,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 2"
             pointerImg="/Dark_1_purple.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -216,6 +225,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 3"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -226,6 +236,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 4"
             pointerImg="/Dark_1_purple.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -236,6 +247,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 5"
             pointerImg="/Storm_3_green.webp"
+            onTowerClick={onTowerClick}
           />
         </>
 
@@ -248,6 +260,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 1"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -257,6 +270,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 2"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -267,6 +281,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 3"
             pointerImg="/Light_3_yellow.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -277,6 +292,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 4"
             pointerImg="/Light_3_yellow.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -287,6 +303,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 5"
             pointerImg="/FIRE_3_red.webp"
+            onTowerClick={onTowerClick}
           />
         </>
 
@@ -299,6 +316,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 1"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -308,6 +326,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 2"
             pointerImg="/Dark_1_purple.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -318,6 +337,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 3"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -328,6 +348,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 4"
             pointerImg="/FIRE_3_red.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -338,6 +359,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 5"
             pointerImg="/Storm_3_green.webp"
+            onTowerClick={onTowerClick}
           />
         </>
 
@@ -350,6 +372,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 1"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -359,6 +382,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 2"
             pointerImg="/Light_3_yellow.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -369,6 +393,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 3"
             pointerImg="/Light_2_yellow.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -379,6 +404,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 4"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
 
           <TowerHoverPointer
@@ -389,6 +415,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
             isActive={isActive}
             label="Tower 5"
             pointerImg="/Water-3-blue.webp"
+            onTowerClick={onTowerClick}
           />
         </>
     }
@@ -409,7 +436,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
   );
 }
 
-export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotation,setMapRotation }) {
+export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotation,setMapRotation, onTowerClick }) {
   // const [selectedGate, setSelectedGate] = useState("gate1");
   // const [mapRotation, setMapRotation] = useState(0);
   const mapGroupRef = useRef();
@@ -640,17 +667,17 @@ export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotat
 
         {/* Building Areas */}
         <BuildingArea areaName="building-area1" position={[38, 26, 77]} rotation={[0, -Math.PI, 0]}
-          isActive={isHtmlVisible("building-area1")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
+          isActive={isHtmlVisible("building-area1")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} onTowerClick={onTowerClick} />
         <BuildingArea areaName="building-area2" position={[86, 26, 5]} rotation={[0, -Math.PI / 1.5, 0]}
-          isActive={isHtmlVisible("building-area2")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
+          isActive={isHtmlVisible("building-area2")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} onTowerClick={onTowerClick} />
         <BuildingArea areaName="building-area3" position={[46.9, 26, -71.3]} rotation={[0, -1.05, 0]}
-          isActive={isHtmlVisible("building-area3")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
+          isActive={isHtmlVisible("building-area3")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} onTowerClick={onTowerClick} />
         <BuildingArea areaName="building-area4" position={[-38, 26, -76.4]} rotation={[0, 0, 0]}
-          isActive={isHtmlVisible("building-area4")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
+          isActive={isHtmlVisible("building-area4")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} onTowerClick={onTowerClick} />
         <BuildingArea areaName="building-area5" position={[-85, 26, -5.1]} rotation={[0, Math.PI / 3, 0]}
-          isActive={isHtmlVisible("building-area5")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
+          isActive={isHtmlVisible("building-area5")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} onTowerClick={onTowerClick} />
         <BuildingArea areaName="building-area6" position={[-48, 26, 71]} rotation={[0, Math.PI / 1.5, 0]}
-          isActive={isHtmlVisible("building-area6")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
+          isActive={isHtmlVisible("building-area6")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} onTowerClick={onTowerClick} />
 
         {/* Wall Gates */}
         <GateGroup gateName="gate1" isActive={selectedGate === "gate1"} name="wall-area1" position={[-1, 35, 137]} rotation={[0, 0, 0]} scale={1}>
