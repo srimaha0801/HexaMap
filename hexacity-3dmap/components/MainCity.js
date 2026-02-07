@@ -2,8 +2,9 @@ import { Canvas } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 import Map from "./Map";
 import Building from "./Building";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import HexagonCompass from "./HexagonCompass";
+import LoadingScreen from "./LoadingScreen";
 import { pointersMap } from "./util";
 
 export default function MainCity() {
@@ -13,11 +14,19 @@ export default function MainCity() {
   const [mapRotation, setMapRotation] = useState(0);
   const [selectedTower, setSelectedTower] = useState(null);
   const [selectedDefense, setSelectedDefense] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (ref.current) {
       console.log("ref data: ", ref.current.position);
     }
+    
+    // Hide loading screen after initial render
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    
+    return () => clearTimeout(timer);
   }, [ref]);
 
   const handleGateSelect = (gate) => {
@@ -51,6 +60,7 @@ export default function MainCity() {
 
   return (
     <div>
+      {isLoading && <LoadingScreen />}
 
             <HexagonCompass selectedGate={selectedGate} onGateSelect={handleGateSelect} />
 
@@ -179,7 +189,19 @@ export default function MainCity() {
 
 
 
-      <Canvas camera={{ position: [0, 250, 530], fov: 30 }} ref={ref} className="mt-[25%] md:mt-auto">
+      <Canvas 
+        camera={{ position: [0, 250, 530], fov: 30 }} 
+        ref={ref} 
+        className="mt-[25%] md:mt-auto"
+        dpr={[1, 2]}
+        performance={{ min: 0.5 }}
+        gl={{ 
+          antialias: true,
+          powerPreference: "high-performance",
+          alpha: false
+        }}
+      >
+        <Suspense fallback={null}>
         <ambientLight intensity={1.3} />
         <directionalLight position={[5, 15, 10]} />
 
@@ -217,6 +239,7 @@ export default function MainCity() {
           enableDamping={true}
           dampingFactor={0.05}
         />
+        </Suspense>
       </Canvas>
 
     </div>
