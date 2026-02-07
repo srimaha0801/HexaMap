@@ -53,7 +53,7 @@ export default function MainCity() {
       <HexagonCompass selectedGate={selectedGate} onGateSelect={handleGateSelect} />
       {/* </Html> */}
 
-      <div className="absolute top-[10%] left-5 z-[1000] -translate-y-1/2">
+      <div className="absolute top-[10%] md:top-[50%] left-5 z-[1000] -translate-y-1/2">
         <button
           onClick={handlePrevGate}
           className="flex cursor-pointer items-center gap-x-1 rounded-xl bg-gray-800 p-3 font-semibold leading-6 text-white shadow-2xl shadow-zinc-900 transition-transform duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gray-900 hover:shadow-zinc-900 active:scale-95"
@@ -76,7 +76,7 @@ export default function MainCity() {
         </button>
       </div>
 
-      <div className="absolute top-[10%] right-5 z-[1000] -translate-y-1/2">
+      <div className="absolute top-[10%] md:top-[50%] right-5 z-[1000] -translate-y-1/2">
         <button
           onClick={handleNextGate}
           className="flex cursor-pointer items-center gap-x-1 rounded-xl bg-gray-800 p-3 font-semibold leading-6 text-white shadow-2xl shadow-zinc-900 transition-transform duration-300 ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-gray-900 hover:shadow-zinc-900 active:scale-95"
@@ -130,6 +130,7 @@ export default function MainCity() {
           dampingFactor={0.05}
         />
       </Canvas>
+
     </div>
   );
 }
