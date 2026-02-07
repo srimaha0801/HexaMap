@@ -1,7 +1,7 @@
 import { Html } from "@react-three/drei";
-import { useState } from "react";
+import { useState, useCallback, memo, useMemo } from "react";
 
-export default function HoverPointer({
+const HoverPointer = memo(function HoverPointer({
   name,
   model,
   position,
@@ -20,7 +20,13 @@ export default function HoverPointer({
 }) {
   const [hovered, setHovered] = useState(false);
 
-  const handleClick = (e) => {
+  // Clone the model scene once and memoize it
+  const clonedScene = useMemo(() => {
+    if (!model?.scene) return null;
+    return model.scene.clone();
+  }, [model]);
+
+  const handleClick = useCallback((e) => {
     if (!isActive) return;
     e.stopPropagation();
     
@@ -28,28 +34,39 @@ export default function HoverPointer({
     if (onDefenseClick) {
       onDefenseClick({ label, level, type, attack, defence });
     }
-  };
+  }, [isActive, onDefenseClick, label, level, type, attack, defence]);
+
+  const handlePointerOver = useCallback((e) => {
+    if (!isActive) return;
+    e.stopPropagation();
+    setHovered(true);
+  }, [isActive]);
+
+  const handlePointerOut = useCallback((e) => {
+    e.stopPropagation();
+    setHovered(false);
+  }, []);
+
+  if (!clonedScene) return null;
 
   return (
     <group
       position={position}
       rotation={rotation}
       onClick={handleClick}
-      onPointerOver={(e) => {
-        if (!isActive) return;
-        e.stopPropagation();
-        setHovered(true);
-      }}
-      onPointerOut={(e) => {
-        e.stopPropagation();
-        setHovered(false);
-      }}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
     >
       {/* Defense model */}
-      <primitive name={name} object={model.scene.clone()} scale={scale} />
+      <primitive name={name} object={clonedScene} scale={scale} />
 
       {isActive && pointerImg && (
-        <Html position={[0, pointerHeight, 0]} center distanceFactor={100} occlude>
+        <Html 
+          position={[0, pointerHeight, 0]} 
+          center 
+          distanceFactor={100}
+          style={{ pointerEvents: 'none' }}
+        >
           <div className="pointer-events-none">
             <img
               src={pointerImg}
@@ -66,11 +83,11 @@ export default function HoverPointer({
           position={[0, tooltipHeight, 0]}
           center
           distanceFactor={100}
-          occlude="raycast"
-          zIndexRange={[10, 0]}
+          zIndexRange={[100, 0]}
+          style={{ pointerEvents: 'none' }}
         >
           <div className="pointer-events-none hidden md:block">
-            <div className="w-52 z-[100] absolute rounded-xl border border-blue-400/40 bg-zinc-900 p-3 shadow-[0_0_15px_rgba(59,130,246,0.35)]">
+            <div className="w-52 z-[100] rounded-xl border border-blue-400/40 bg-zinc-900 p-3 shadow-[0_0_15px_rgba(59,130,246,0.35)]">
               
               {/* Title */}
               <h2 className="text-center text-base font-semibold text-blue-300 mb-2">
@@ -113,4 +130,6 @@ export default function HoverPointer({
       )}
     </group>
   );
-}
+});
+
+export default HoverPointer;

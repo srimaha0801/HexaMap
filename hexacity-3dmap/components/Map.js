@@ -1,52 +1,59 @@
 import { Html, Text, useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useMemo, memo } from "react";
 import Building from "./Building";
 import HexagonCompass from "./HexagonCompass";
 import TowerHoverPointer from "./TowerHoverPointer";
 import HoverPointer from "./HoverPointer";
 import { pointersMap } from "./util";
+import * as THREE from "three";
 import GateName from "./GateName";
 
-// Component to handle gate opacity
+// Component to handle gate opacity - No memo to ensure isActive changes trigger updates
 function GateGroup({ gateName, isActive, children, onDefenseClick, stoneThrower, ballista, ...props }) {
   const groupRef = useRef();
+  const materialsInitialized = useRef(false);
 
   useFrame(() => {
     if (!groupRef.current) return;
 
-    groupRef.current.traverse((child) => {
-      if (child.isMesh && child.material) {
-        // Handle both single material and array of materials
-        const materials = Array.isArray(child.material) ? child.material : [child.material];
+    if (!materialsInitialized.current) {
+      groupRef.current.traverse((child) => {
+        if (child.isMesh && child.material) {
+          const materials = Array.isArray(child.material) ? child.material : [child.material];
 
-        materials.forEach((material) => {
-          if (!material) return;
+          materials.forEach((material, index) => {
+            if (!material || material.userData.cloned) return;
 
-          if (!material.userData) {
-            material.userData = {};
-          }
-
-          if (!material.userData.cloned) {
             const clonedMaterial = material.clone();
             clonedMaterial.userData.cloned = true;
             clonedMaterial.transparent = true;
 
             if (Array.isArray(child.material)) {
-              const index = child.material.indexOf(material);
               child.material[index] = clonedMaterial;
             } else {
               child.material = clonedMaterial;
             }
-          }
-        });
+          });
+        }
+      });
+      materialsInitialized.current = true;
+    }
 
-        // Update the opacity based on active state
-        const finalMaterials = Array.isArray(child.material) ? child.material : [child.material];
-        finalMaterials.forEach((mat) => {
+    // Update opacity every frame - removed the threshold check to force updates
+    const targetOpacity = isActive ? 1 : 0.2;
+    
+    groupRef.current.traverse((child) => {
+      if (child.isMesh && child.material) {
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+
+        materials.forEach((mat) => {
           if (mat) {
-            mat.opacity = isActive ? 1 : 0.2;
-            mat.needsUpdate = true;
+            // Always update if different, no threshold
+            if (mat.opacity !== targetOpacity) {
+              mat.opacity = targetOpacity;
+              mat.needsUpdate = true;
+            }
           }
         });
       }
@@ -60,28 +67,41 @@ function GateGroup({ gateName, isActive, children, onDefenseClick, stoneThrower,
   );
 }
 
-// Component to handle opacity for building groups
-function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTower, lightTower, fireTower, waterTower, windTower, onTowerClick }) {
+// Component to handle opacity for building groups - Memoized for performance
+const BuildingArea = memo(function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTower, lightTower, fireTower, waterTower, windTower, onTowerClick }) {
   const groupRef = useRef();
+  const materialsInitialized = useRef(false);
 
+  // Memoize the cloned barrack scene
+  const clonedBarrack = useMemo(() => {
+    if (!barrack?.scene) return null;
+    return barrack.scene.clone();
+  }, [barrack]);
 
   useFrame(() => {
-    if (!groupRef.current) return
+    if (!groupRef.current) return;
 
-    groupRef.current.traverse((child) => {
-      if (child.isMesh) {
-        if (!child.material.userData.cloned) {
-          child.material = child.material.clone()
-          child.material.userData.cloned = true
-          child.material.transparent = true
+    // Only initialize materials once
+    if (!materialsInitialized.current) {
+      groupRef.current.traverse((child) => {
+        if (child.isMesh && child.material && !child.material.userData.cloned) {
+          child.material = child.material.clone();
+          child.material.userData.cloned = true;
+          child.material.transparent = true;
         }
+      });
+      materialsInitialized.current = true;
+    }
 
-        // here we are going to update the opacity
-        child.material.opacity = isActive ? 1 : 0.2
-        child.material.needsUpdate = true
+    // Update opacity only when needed
+    const targetOpacity = isActive ? 1 : 0.2;
+    groupRef.current.traverse((child) => {
+      if (child.isMesh && child.material && Math.abs(child.material.opacity - targetOpacity) > 0.01) {
+        child.material.opacity = targetOpacity;
+        child.material.needsUpdate = true;
       }
-    })
-  }, [isActive])
+    });
+  }, [isActive]);
 
   const renderTowers = () => {
     switch (areaName) {
@@ -431,12 +451,11 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
       position={position}
       rotation={rotation}
     >
-
-      <primitive object={barrack.scene.clone()} />
+      {clonedBarrack && <primitive object={clonedBarrack} />}
       {renderTowers()}
     </group>
   );
-}
+});
 
 export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRotation, setMapRotation, onTowerClick, onDefenseClick }) {
   // const [selectedGate, setSelectedGate] = useState("gate1");
@@ -453,6 +472,12 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
   const wallGate = useGLTF("/models/wallGate.glb");
   const ballista = useGLTF("/models/ballista.glb");
   const stoneThrower = useGLTF("/models/stoneThrower.glb");
+
+  // Memoize wallGate clones to prevent re-cloning on every render
+  const wallGateClones = useMemo(() => {
+    if (!wallGate?.scene) return [];
+    return Array.from({ length: 6 }, () => wallGate.scene.clone());
+  }, [wallGate]);
 
   const { controls } = useThree();
 
@@ -474,28 +499,34 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
   //   setMapRotation(prev => prev + Math.PI / 3); // Add 60 degrees for continuous rotation
   // };
 
-  // Animate map rotation when gate changes
+  // Animate map rotation when gate changes - Optimized
   useEffect(() => {
     if (!mapGroupRef.current) return;
 
     const targetRotation = mapRotation;
     const currentRotation = mapGroupRef.current.rotation.y;
+    
+    // Skip animation if already at target
+    if (Math.abs(targetRotation - currentRotation) < 0.001) return;
 
-    let progress = 0;
+    let animationFrameId;
     const duration = 1000;
     const startTime = Date.now();
+    const startRotation = currentRotation;
 
     const animate = () => {
       const elapsed = Date.now() - startTime;
-      progress = Math.min(elapsed / duration, 1);
+      const progress = Math.min(elapsed / duration, 1);
 
       const eased = 1 - Math.pow(1 - progress, 3);
-      const newRotation = currentRotation + (targetRotation - currentRotation) * eased;
+      const newRotation = startRotation + (targetRotation - startRotation) * eased;
 
-      mapGroupRef.current.rotation.y = newRotation;
+      if (mapGroupRef.current) {
+        mapGroupRef.current.rotation.y = newRotation;
+      }
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
       } else {
         // Reset camera azimuth angle after rotation completes
         if (controlsRef?.current) {
@@ -504,9 +535,17 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
       }
     };
 
-    animate();
+    animationFrameId = requestAnimationFrame(animate);
 
-    // Set camera control limits
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [mapRotation, controlsRef]);
+
+  // Set camera control limits
+  useEffect(() => {
     if (controls) {
       // Zoom restrictions
       controls.minDistance = 150;
@@ -535,7 +574,7 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
       // Update controls
       controls.update();
     }
-  }, [mapRotation, controls, controlsRef]);
+  }, [controls]);
 
   // Check if building area should be visible
   const isHtmlVisible = (buildingName) => {
@@ -683,7 +722,7 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
 
         {/* Wall Gates */}
         <GateGroup gateName="gate1" isActive={selectedGate === "gate1"} name="wall-area1" position={[-1, 35, 137]} rotation={[0, 0, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
-          <primitive object={wallGate.scene.clone()} scale={1} />
+          <primitive object={wallGateClones[0]} scale={1} />
           <GateName gateName={"Gate 1"} />
           <HoverPointer
             name="stoneThrower"
@@ -727,7 +766,7 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
         </GateGroup>
 
         <GateGroup gateName="gate2" isActive={selectedGate === "gate2"} name="wall-area2" position={[117, 35, 71.5]} rotation={[0, Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
-          <primitive object={wallGate.scene.clone()} scale={1} />
+          <primitive object={wallGateClones[1]} scale={1} />
           <GateName gateName={"Gate 2"} />
           <HoverPointer
             name="stoneThrower"
@@ -771,7 +810,7 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
         </GateGroup>
 
         <GateGroup gateName="gate3" isActive={selectedGate === "gate3"} name="wall-area3" position={[117, 35, -65]} rotation={[0, 2 * Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
-          <primitive object={wallGate.scene.clone()} scale={1} />
+          <primitive object={wallGateClones[2]} scale={1} />
           <GateName gateName={"Gate 3"} />
           <HoverPointer
             name="stoneThrower"
@@ -815,7 +854,7 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
         </GateGroup>
 
         <GateGroup gateName="gate4" isActive={selectedGate === "gate4"} name="wall-area4" position={[1, 35, -137]} rotation={[0, Math.PI, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
-          <primitive object={wallGate.scene.clone()} scale={1} />
+          <primitive object={wallGateClones[3]} scale={1} />
 
           <GateName gateName={"Gate 4"} />
           <HoverPointer
@@ -860,7 +899,7 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
         </GateGroup>
 
         <GateGroup gateName="gate5" isActive={selectedGate === "gate5"} name="wall-area5" position={[-117, 35, -71.5]} rotation={[0, 4 * Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
-          <primitive object={wallGate.scene.clone()} scale={1} />
+          <primitive object={wallGateClones[4]} scale={1} />
           <GateName gateName={"Gate 5"} />
 
 
@@ -906,7 +945,7 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
         </GateGroup>
 
         <GateGroup gateName="gate6" isActive={selectedGate === "gate6"} name="wall-area6" position={[-117, 35, 65]} rotation={[0, 5 * Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
-          <primitive object={wallGate.scene.clone()} scale={1} />
+          <primitive object={wallGateClones[5]} scale={1} />
           <GateName gateName={"Gate 6"} />
 
           <HoverPointer
@@ -954,4 +993,16 @@ export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRot
   );
 }
 
+// Preload all models for better performance
 useGLTF.preload("/models/map.glb");
+useGLTF.preload("/models/barrack.glb");
+useGLTF.preload("/models/darkTower.glb");
+useGLTF.preload("/models/lightTower.glb");
+useGLTF.preload("/models/fireTower.glb");
+useGLTF.preload("/models/waterTower.glb");
+useGLTF.preload("/models/windTower.glb");
+useGLTF.preload("/models/wallGate.glb");
+useGLTF.preload("/models/ballista.glb");
+useGLTF.preload("/models/stoneThrower.glb");
+useGLTF.preload("/models/golem.glb");
+useGLTF.preload("/models/centerCrystal.glb");

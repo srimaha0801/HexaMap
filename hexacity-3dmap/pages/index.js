@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 const MainCity = dynamic(() => import("../components/MainCity"), {
   ssr: false,
@@ -9,7 +10,9 @@ export default function Home() {
     <main className="min-h-screen bg-black text-white">
       <div className="h-20 bg-black flex items-center px-6"></div>
       <div className="w-full">
-        <MainCity />
+        <ErrorBoundary>
+          <MainCity />
+        </ErrorBoundary>
       </div>
     </main>
   );
