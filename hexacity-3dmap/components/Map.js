@@ -14,19 +14,19 @@ function GateGroup({ gateName, isActive, children, ...props }) {
       if (child.isMesh && child.material) {
         // Handle both single material and array of materials
         const materials = Array.isArray(child.material) ? child.material : [child.material];
-        
+
         materials.forEach((material) => {
           if (!material) return;
-          
+
           if (!material.userData) {
             material.userData = {};
           }
-          
+
           if (!material.userData.cloned) {
             const clonedMaterial = material.clone();
             clonedMaterial.userData.cloned = true;
             clonedMaterial.transparent = true;
-            
+
             if (Array.isArray(child.material)) {
               const index = child.material.indexOf(material);
               child.material[index] = clonedMaterial;
@@ -56,7 +56,7 @@ function GateGroup({ gateName, isActive, children, ...props }) {
 }
 
 // Component to handle opacity for building groups
-function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTower, lightTower }) {
+function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTower, lightTower, fireTower, waterTower, windTower }) {
   const groupRef = useRef()
 
   useFrame(() => {
@@ -78,46 +78,239 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
   }, [isActive])
 
   const renderTowers = () => {
-    switch(areaName){
-      case 'building-area-1':
+    switch (areaName) {
+      case 'building-area1':
         return <>
-              <primitive name="tower1"
-        object={darkTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
-      {isActive && (
-        <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
-          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
-        </Html>
-      )}
+          <primitive name="tower1" object={fireTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
+          {isActive && (
+            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
+            </Html>
+          )}
 
-      <primitive name="tower2" object={lightTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
-      {isActive && (
-        <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
-          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
-        </Html>
-      )}
+          <primitive name="tower2" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
+          {isActive && (
+            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
+            </Html>
+          )}
 
-      <primitive name="tower3" object={lightTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
-      {isActive && (
-        <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
-          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
-        </Html>
-      )}
+          <primitive name="tower3" object={lightTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
+            </Html>
+          )}
 
-      <primitive name="tower4" object={darkTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
-      {isActive && (
-        <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
-          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
-        </Html>
-      )}
+          <primitive name="tower4" object={fireTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
+            </Html>
+          )}
 
-      <primitive name="tower5" object={darkTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
-      {isActive && (
-        <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
-          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
-        </Html>
-      )}
+          <primitive name="tower5" object={windTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
+          {isActive && (
+            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
+            </Html>
+          )}
         </>
-      // case ..
+        break;
+
+        case 'building-area2':
+        return <>
+          <primitive name="tower1" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
+          {isActive && (
+            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
+            </Html>
+          )}
+
+          <primitive name="tower2" object={waterTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
+          {isActive && (
+            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
+            </Html>
+          )}
+
+          <primitive name="tower3" object={darkTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
+            </Html>
+          )}
+
+          <primitive name="tower4" object={darkTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
+            </Html>
+          )}
+
+          <primitive name="tower5" object={waterTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
+          {isActive && (
+            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
+            </Html>
+          )}
+        </>
+        break;
+
+        case 'building-area3':
+        return <>
+          <primitive name="tower1" object={windTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
+          {isActive && (
+            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
+            </Html>
+          )}
+
+          <primitive name="tower2" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
+          {isActive && (
+            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
+            </Html>
+          )}
+
+          <primitive name="tower3" object={darkTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
+            </Html>
+          )}
+
+          <primitive name="tower4" object={darkTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
+            </Html>
+          )}
+
+          <primitive name="tower5" object={windTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
+          {isActive && (
+            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
+            </Html>
+          )}
+        </>
+        break;
+        case 'building-area4':
+        return <>
+          <primitive name="tower1"
+            object={windTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
+          {isActive && (
+            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
+            </Html>
+          )}
+
+          <primitive name="tower2" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
+          {isActive && (
+            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
+            </Html>
+          )}
+
+          <primitive name="tower3" object={lightTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
+            </Html>
+          )}
+
+          <primitive name="tower4" object={lightTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
+            </Html>
+          )}
+
+          <primitive name="tower5" object={fireTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
+          {isActive && (
+            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
+            </Html>
+          )}
+        </>
+        break;
+        case 'building-area5':
+        return <>
+          <primitive name="tower1" object={waterTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
+          {isActive && (
+            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
+            </Html>
+          )}
+
+          <primitive name="tower2" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
+          {isActive && (
+            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
+            </Html>
+          )}
+
+          <primitive name="tower3" object={darkTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
+            </Html>
+          )}
+
+          <primitive name="tower4" object={fireTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
+            </Html>
+          )}
+
+          <primitive name="tower5" object={windTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
+          {isActive && (
+            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
+            </Html>
+          )}
+        </>
+        break;
+        case 'building-area6':
+        return <>
+          <primitive name="tower1"
+            object={lightTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
+          {isActive && (
+            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
+            </Html>
+          )}
+
+          <primitive name="tower2" object={lightTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
+          {isActive && (
+            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
+            </Html>
+          )}
+
+          <primitive name="tower3" object={lightTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
+            </Html>
+          )}
+
+          <primitive name="tower4" object={darkTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
+          {isActive && (
+            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
+            </Html>
+          )}
+
+          <primitive name="tower5" object={darkTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
+          {isActive && (
+            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
+              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
+            </Html>
+          )}
+        </>
+        break;
     }
   }
 
@@ -132,8 +325,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
 
       <primitive object={barrack.scene.clone()} />
 
-      <primitive name="tower1"
-        object={darkTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
+      {/* <primitive name="tower1" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
       {isActive && (
         <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
           <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
@@ -166,7 +358,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
         <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
           <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
         </Html>
-      )}
+      )} */}
 
       {renderTowers()}
     </group>
@@ -182,6 +374,9 @@ export default function Map({ controlsRef }) {
   const barrack = useGLTF("/models/barrack.glb");
   const darkTower = useGLTF("/models/darkTower.glb");
   const lightTower = useGLTF("/models/lightTower.glb");
+  const fireTower = useGLTF("/models/fireTower.glb");
+  const waterTower = useGLTF("/models/waterTower.glb");
+  const windTower = useGLTF("/models/windTower.glb");
   const wallGate = useGLTF("/models/wallGate.glb");
   const ballista = useGLTF("/models/ballista.glb");
   const stoneThrower = useGLTF("/models/stoneThrower.glb");
@@ -251,27 +446,27 @@ export default function Map({ controlsRef }) {
       // Zoom restrictions
       controls.minDistance = 150;
       controls.maxDistance = 400;
-      
+
       // Vertical angle restrictions (prevent upside down and top view)
       // Math.PI/2 is 90 degrees (horizontal view)
       controls.minPolarAngle = Math.PI / 3;    // 60 degrees (30 degrees from horizontal)
       controls.maxPolarAngle = Math.PI / 2.2;  // ~82 degrees (8 degrees from horizontal)
-      
+
       // Disable panning to prevent free movement
       controls.enablePan = false;
-      
+
       // Enable rotation but restrict it
       controls.enableRotate = true;
-      
+
       // Restrict horizontal rotation to ±20 degrees from current position
       const maxOffset = Math.PI / 9; // 20 degrees
       controls.minAzimuthAngle = -maxOffset;
       controls.maxAzimuthAngle = maxOffset;
-      
+
       // Enable damping for smoother control
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
-      
+
       // Update controls
       controls.update();
     }
@@ -323,9 +518,9 @@ export default function Map({ controlsRef }) {
         />
         {isHtmlVisible('golem-1') && (
           <Html position={[0, 50.5, 32.2]} center distanceFactor={100} occlude>
-             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/pointer-3.webp'} className="max-w-20"/>
-              </div>
+            <div className=" rounded-full text-base font-semibold shadow-lg">
+              <img src={'/Light_3_yellow.webp'} className="max-w-20" />
+            </div>
           </Html>
         )}
 
@@ -337,11 +532,11 @@ export default function Map({ controlsRef }) {
           rotation={[0, Math.PI / 3.05, 0]}
           scale={0.8}
         />
-          {isHtmlVisible('golem-2') && (
+        {isHtmlVisible('golem-2') && (
           <Html position={[28, 50.5, 16.4]} center distanceFactor={100} occlude>
-             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/pointer-3.webp'} className="max-w-20"/>
-              </div>
+            <div className=" rounded-full text-base font-semibold shadow-lg">
+              <img src={'/Light_3_yellow.webp'} className="max-w-20" />
+            </div>
           </Html>
         )}
 
@@ -353,11 +548,11 @@ export default function Map({ controlsRef }) {
           rotation={[0, Math.PI / 1.5, 0]}
           scale={0.8}
         />
-         {isHtmlVisible('golem-3') && (
-          <Html   position={[28.3, 50.5, -15.5]} center distanceFactor={100} occlude>
+        {isHtmlVisible('golem-3') && (
+          <Html position={[28.3, 50.5, -15.5]} center distanceFactor={100} occlude>
             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/pointer-3.webp'} className="max-w-20"/>
-              </div>
+              <img src={'/Light_3_yellow.webp'} className="max-w-20" />
+            </div>
           </Html>
         )}
 
@@ -369,11 +564,11 @@ export default function Map({ controlsRef }) {
           rotation={[0, -Math.PI, 0]}
           scale={0.8}
         />
-           {isHtmlVisible('golem-4') && (
-          <Html   position={[0, 50.5, -31.95]} center distanceFactor={100} occlude>
-             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/pointer-3.webp'} className="max-w-20"/>
-              </div>
+        {isHtmlVisible('golem-4') && (
+          <Html position={[0, 50.5, -31.95]} center distanceFactor={100} occlude>
+            <div className=" rounded-full text-base font-semibold shadow-lg">
+              <img src={'/Light_3_yellow.webp'} className="max-w-20" />
+            </div>
           </Html>
         )}
 
@@ -385,11 +580,11 @@ export default function Map({ controlsRef }) {
           rotation={[0, -(Math.PI / 1.5), 0]}
           scale={0.8}
         />
-         {isHtmlVisible('golem-5') && (
-          <Html  position={[-27, 50.5, -16.4]} center distanceFactor={100} occlude>
-             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/pointer-3.webp'} className="max-w-20"/>
-              </div>
+        {isHtmlVisible('golem-5') && (
+          <Html position={[-27, 50.5, -16.4]} center distanceFactor={100} occlude>
+            <div className=" rounded-full text-base font-semibold shadow-lg">
+              <img src={'/Light_2_yellow.webp'} className="max-w-20" />
+            </div>
           </Html>
         )}
 
@@ -401,28 +596,28 @@ export default function Map({ controlsRef }) {
           rotation={[0, -(Math.PI / 3), 0]}
           scale={0.8}
         />
-         {isHtmlVisible('golem-6') && (
-          <Html  position={[-27.2, 50.5, 16.4]} center distanceFactor={100} occlude>
-             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/pointer-3.webp'} className="max-w-20"/>
-              </div>
+        {isHtmlVisible('golem-6') && (
+          <Html position={[-27.2, 50.5, 16.4]} center distanceFactor={100} occlude>
+            <div className=" rounded-full text-base font-semibold shadow-lg">
+              <img src={'/Light_3_yellow.webp'} className="max-w-20" />
+            </div>
           </Html>
         )}
 
 
         {/* Building Areas */}
         <BuildingArea areaName="building-area1" position={[38, 26, 77]} rotation={[0, -Math.PI, 0]}
-          isActive={isHtmlVisible("building-area1")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} />
+          isActive={isHtmlVisible("building-area1")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
         <BuildingArea areaName="building-area2" position={[86, 26, 5]} rotation={[0, -Math.PI / 1.5, 0]}
-          isActive={isHtmlVisible("building-area2")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} />
+          isActive={isHtmlVisible("building-area2")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
         <BuildingArea areaName="building-area3" position={[46.9, 26, -71.3]} rotation={[0, -1.05, 0]}
-          isActive={isHtmlVisible("building-area3")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} />
+          isActive={isHtmlVisible("building-area3")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
         <BuildingArea areaName="building-area4" position={[-38, 26, -76.4]} rotation={[0, 0, 0]}
-          isActive={isHtmlVisible("building-area4")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} />
+          isActive={isHtmlVisible("building-area4")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
         <BuildingArea areaName="building-area5" position={[-85, 26, -5.1]} rotation={[0, Math.PI / 3, 0]}
-          isActive={isHtmlVisible("building-area5")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} />
+          isActive={isHtmlVisible("building-area5")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
         <BuildingArea areaName="building-area6" position={[-48, 26, 71]} rotation={[0, Math.PI / 1.5, 0]}
-          isActive={isHtmlVisible("building-area6")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} />
+          isActive={isHtmlVisible("building-area6")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} />
 
         {/* Wall Gates */}
         <GateGroup gateName="gate1" isActive={selectedGate === "gate1"} name="wall-area1" position={[-1, 35, 137]} rotation={[0, 0, 0]} scale={1}>

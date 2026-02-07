@@ -18,7 +18,7 @@ export default function MainCity() {
     <div className="w-full h-[600px] bg-black">
       <Canvas camera={{ position: [0, 250, 530], fov: 30 }} ref={ref}>
         <ambientLight intensity={1.3} />
-        <directionalLight position={[5, 10, 5]} />
+        <directionalLight position={[5, 15, 10]} />
 
           <group name="main-city">
             <Map controlsRef={controlsRef} />
