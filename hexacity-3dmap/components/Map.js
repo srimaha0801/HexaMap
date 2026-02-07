@@ -2,6 +2,7 @@ import { Html, Text, useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import Building from "./Building";
+import TowerHoverPointer from "./TowerHoverPointer";
 
 // Component to handle gate opacity
 function GateGroup({ gateName, isActive, children, ...props }) {
@@ -59,6 +60,10 @@ function GateGroup({ gateName, isActive, children, ...props }) {
 function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTower, lightTower, fireTower, waterTower, windTower }) {
   const groupRef = useRef()
 
+  // Hover popup
+  const [hoverTower1, setHoverTower1] = useState(false);
+
+
   useFrame(() => {
     if (!groupRef.current) return
 
@@ -81,236 +86,309 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
     switch (areaName) {
       case 'building-area1':
         return <>
-          <primitive name="tower1" object={fireTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
-          {isActive && (
-            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower1"
+            model={fireTower}
+            position={[19.5, 0, -19.2]}
+            isActive={isActive}
+            label="Fire Tower"
+            pointerImg="/FIRE_3_red.webp"
+          />
 
-          <primitive name="tower2" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
-          {isActive && (
-            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower2"
+            model={darkTower}
+            position={[19.5, 0, 10]}
+            isActive={isActive}
+            label="Dark Tower"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower3" object={lightTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower3"
+            model={lightTower}
+            position={[-10, 0, 27]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Light Tower"
+            pointerImg="/Light_1_yellow.webp"
+          />
 
-          <primitive name="tower4" object={fireTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower4"
+            model={fireTower}
+            position={[-35.5, 0, 12.2]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Fire Tower"
+            pointerImg="/FIRE_3_red.webp"
+          />
 
-          <primitive name="tower5" object={windTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
-          {isActive && (
-            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower5"
+            model={windTower}
+            position={[-15, 0, -17]}
+            rotation={[0, -Math.PI / 1.2, 0]}
+            isActive={isActive}
+            label="Wind Tower"
+            pointerImg="/Water-3-blue.webp"
+          />
         </>
-        break;
 
-        case 'building-area2':
+      case 'building-area2':
         return <>
-          <primitive name="tower1" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
-          {isActive && (
-            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower1"
+            model={darkTower}
+            position={[19.5, 0, -19.2]}
+            isActive={isActive}
+            label="Dark Tower"
+            pointerImg="/Water_2_blue.webp "
+          />
 
-          <primitive name="tower2" object={waterTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
-          {isActive && (
-            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower2"
+            model={waterTower}
+            position={[19.5, 0, 10]}
+            isActive={isActive}
+            label="Water Tower"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower3" object={darkTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower3"
+            model={darkTower}
+            position={[-10, 0, 27]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Dark Tower"
+            pointerImg="/Water_2_blue.webp"
+          />
 
-          <primitive name="tower4" object={darkTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower4"
+            model={darkTower}
+            position={[-35.5, 0, 12.2]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Dark Tower"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower5" object={waterTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
-          {isActive && (
-            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower5"
+            model={waterTower}
+            position={[-15, 0, -17]}
+            rotation={[0, -Math.PI / 1.2, 0]}
+            isActive={isActive}
+            label="Water Tower"
+            pointerImg="/Water-3-blue.webp"
+          />
         </>
-        break;
 
-        case 'building-area3':
+      case 'building-area3':
         return <>
-          <primitive name="tower1" object={windTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
-          {isActive && (
-            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower1"
+            model={windTower}
+            position={[19.5, 0, -19.2]}
+            isActive={isActive}
+            label="Tower 1"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower2" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
-          {isActive && (
-            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower2"
+            model={darkTower}
+            position={[19.5, 0, 10]}
+            isActive={isActive}
+            label="Tower 2"
+            pointerImg="/Dark_1_purple.webp"
+          />
 
-          <primitive name="tower3" object={darkTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower3"
+            model={darkTower}
+            position={[-10, 0, 27]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Tower 3"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower4" object={darkTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower4"
+            model={darkTower}
+            position={[-35.5, 0, 12.2]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Tower 4"
+            pointerImg="/Dark_1_purple.webp"
+          />
 
-          <primitive name="tower5" object={windTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
-          {isActive && (
-            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower5"
+            model={windTower}
+            position={[-15, 0, -17]}
+            rotation={[0, -Math.PI / 1.2, 0]}
+            isActive={isActive}
+            label="Tower 5"
+            pointerImg="/Storm_3_green.webp"
+          />
         </>
-        break;
-        case 'building-area4':
+
+      case 'building-area4':
         return <>
-          <primitive name="tower1"
-            object={windTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
-          {isActive && (
-            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower1"
+            model={windTower}
+            position={[19.5, 0, -19.2]}
+            isActive={isActive}
+            label="Tower 1"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower2" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
-          {isActive && (
-            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower2"
+            model={darkTower}
+            position={[19.5, 0, 10]}
+            isActive={isActive}
+            label="Tower 2"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower3" object={lightTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower3"
+            model={lightTower}
+            position={[-10, 0, 27]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Tower 3"
+            pointerImg="/Light_3_yellow.webp"
+          />
 
-          <primitive name="tower4" object={lightTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower4"
+            model={lightTower}
+            position={[-35.5, 0, 12.2]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Tower 4"
+            pointerImg="/Light_3_yellow.webp"
+          />
 
-          <primitive name="tower5" object={fireTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
-          {isActive && (
-            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower5"
+            model={fireTower}
+            position={[-15, 0, -17]}
+            rotation={[0, -Math.PI / 1.2, 0]}
+            isActive={isActive}
+            label="Tower 5"
+            pointerImg="/FIRE_3_red.webp"
+          />
         </>
-        break;
-        case 'building-area5':
+
+      case 'building-area5':
         return <>
-          <primitive name="tower1" object={waterTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
-          {isActive && (
-            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower1"
+            model={waterTower}
+            position={[19.5, 0, -19.2]}
+            isActive={isActive}
+            label="Tower 1"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower2" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
-          {isActive && (
-            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower2"
+            model={darkTower}
+            position={[19.5, 0, 10]}
+            isActive={isActive}
+            label="Tower 2"
+            pointerImg="/Dark_1_purple.webp"
+          />
 
-          <primitive name="tower3" object={darkTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower3"
+            model={darkTower}
+            position={[-10, 0, 27]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Tower 3"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower4" object={fireTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower4"
+            model={fireTower}
+            position={[-35.5, 0, 12.2]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Tower 4"
+            pointerImg="/FIRE_3_red.webp"
+          />
 
-          <primitive name="tower5" object={windTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
-          {isActive && (
-            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower5"
+            model={windTower}
+            position={[-15, 0, -17]}
+            rotation={[0, -Math.PI / 1.2, 0]}
+            isActive={isActive}
+            label="Tower 5"
+            pointerImg="/Storm_3_green.webp"
+          />
         </>
-        break;
-        case 'building-area6':
+
+      case 'building-area6':
         return <>
-          <primitive name="tower1"
-            object={lightTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
-          {isActive && (
-            <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower1"
+            model={lightTower}
+            position={[19.5, 0, -19.2]}
+            isActive={isActive}
+            label="Tower 1"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower2" object={lightTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
-          {isActive && (
-            <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower2"
+            model={lightTower}
+            position={[19.5, 0, 10]}
+            isActive={isActive}
+            label="Tower 2"
+            pointerImg="/Light_3_yellow.webp"
+          />
 
-          <primitive name="tower3" object={lightTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower3"
+            model={lightTower}
+            position={[-10, 0, 27]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Tower 3"
+            pointerImg="/Light_2_yellow.webp"
+          />
 
-          <primitive name="tower4" object={darkTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
-          {isActive && (
-            <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower4"
+            model={darkTower}
+            position={[-35.5, 0, 12.2]}
+            rotation={[0, -Math.PI / 1.5, 0]}
+            isActive={isActive}
+            label="Tower 4"
+            pointerImg="/Water-3-blue.webp"
+          />
 
-          <primitive name="tower5" object={darkTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
-          {isActive && (
-            <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
-              <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
-            </Html>
-          )}
+          <TowerHoverPointer
+            name="tower5"
+            model={darkTower}
+            position={[-15, 0, -17]}
+            rotation={[0, -Math.PI / 1.2, 0]}
+            isActive={isActive}
+            label="Tower 5"
+            pointerImg="/Water-3-blue.webp"
+          />
         </>
-        break;
     }
   }
 
@@ -324,42 +402,6 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
     >
 
       <primitive object={barrack.scene.clone()} />
-
-      {/* <primitive name="tower1" object={darkTower.scene.clone()} scale={1} position={[19.5, 0, -19.2]} />
-      {isActive && (
-        <Html position={[19.5, 35, -19.2]} center distanceFactor={100} occlude>
-          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">1</div>
-        </Html>
-      )}
-
-      <primitive name="tower2" object={lightTower.scene.clone()} scale={1} position={[19.5, 0, 10]} />
-      {isActive && (
-        <Html position={[19.5, 35, 10]} center distanceFactor={100} occlude>
-          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">2</div>
-        </Html>
-      )}
-
-      <primitive name="tower3" object={lightTower.scene.clone()} scale={1} position={[-10, 0, 27]} rotation={[0, -Math.PI / 1.5, 0]} />
-      {isActive && (
-        <Html position={[-10, 35, 27]} center distanceFactor={100} occlude>
-          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">3</div>
-        </Html>
-      )}
-
-      <primitive name="tower4" object={darkTower.scene.clone()} scale={1} position={[-35.5, 0, 12.2]} rotation={[0, -Math.PI / 1.5, 0]} />
-      {isActive && (
-        <Html position={[-35.5, 35, 12.2]} center distanceFactor={100} occlude>
-          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">4</div>
-        </Html>
-      )}
-
-      <primitive name="tower5" object={darkTower.scene.clone()} scale={1} position={[-15, 0, -17]} rotation={[0, -Math.PI / 1.2, 0]} />
-      {isActive && (
-        <Html position={[-15.5, 35, -17]} center distanceFactor={100} occlude>
-          <div className="px-3 py-1 w-7.5 h-7.5 rounded-full bg-blue-600 text-white text-base font-semibold shadow-lg">5</div>
-        </Html>
-      )} */}
-
       {renderTowers()}
     </group>
   );
@@ -519,7 +561,7 @@ export default function Map({ controlsRef }) {
         {isHtmlVisible('golem-1') && (
           <Html position={[0, 50.5, 32.2]} center distanceFactor={100} occlude>
             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/Light_3_yellow.webp'} className="max-w-20" />
+              <img src={'/Light_3_yellow.webp'} className="max-w-11" />
             </div>
           </Html>
         )}
@@ -535,7 +577,7 @@ export default function Map({ controlsRef }) {
         {isHtmlVisible('golem-2') && (
           <Html position={[28, 50.5, 16.4]} center distanceFactor={100} occlude>
             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/Light_3_yellow.webp'} className="max-w-20" />
+              <img src={'/Light_3_yellow.webp'} className="max-w-11" />
             </div>
           </Html>
         )}
@@ -551,7 +593,7 @@ export default function Map({ controlsRef }) {
         {isHtmlVisible('golem-3') && (
           <Html position={[28.3, 50.5, -15.5]} center distanceFactor={100} occlude>
             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/Light_3_yellow.webp'} className="max-w-20" />
+              <img src={'/Light_3_yellow.webp'} className="max-w-11" />
             </div>
           </Html>
         )}
@@ -567,7 +609,7 @@ export default function Map({ controlsRef }) {
         {isHtmlVisible('golem-4') && (
           <Html position={[0, 50.5, -31.95]} center distanceFactor={100} occlude>
             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/Light_3_yellow.webp'} className="max-w-20" />
+              <img src={'/Light_3_yellow.webp'} className="max-w-11" />
             </div>
           </Html>
         )}
@@ -583,7 +625,7 @@ export default function Map({ controlsRef }) {
         {isHtmlVisible('golem-5') && (
           <Html position={[-27, 50.5, -16.4]} center distanceFactor={100} occlude>
             <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/Light_2_yellow.webp'} className="max-w-20" />
+              <img src={'/Light_2_yellow.webp'} className="max-w-11" />
             </div>
           </Html>
         )}
@@ -598,8 +640,8 @@ export default function Map({ controlsRef }) {
         />
         {isHtmlVisible('golem-6') && (
           <Html position={[-27.2, 50.5, 16.4]} center distanceFactor={100} occlude>
-            <div className=" rounded-full text-base font-semibold shadow-lg">
-              <img src={'/Light_3_yellow.webp'} className="max-w-20" />
+            <div className="rounded-full text-base font-semibold shadow-lg">
+              <img src={'/Light_3_yellow.webp'} className="max-w-11" />
             </div>
           </Html>
         )}
