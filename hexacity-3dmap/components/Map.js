@@ -6,6 +6,7 @@ import HexagonCompass from "./HexagonCompass";
 import TowerHoverPointer from "./TowerHoverPointer";
 import HoverPointer from "./HoverPointer";
 import { pointersMap } from "./util";
+import GateName from "./GateName";
 
 // Component to handle gate opacity
 function GateGroup({ gateName, isActive, children, onDefenseClick, stoneThrower, ballista, ...props }) {
@@ -437,7 +438,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
   );
 }
 
-export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotation,setMapRotation, onTowerClick, onDefenseClick }) {
+export default function Map({ controlsRef, selectedGate, setSelectedGate, mapRotation, setMapRotation, onTowerClick, onDefenseClick }) {
   // const [selectedGate, setSelectedGate] = useState("gate1");
   // const [mapRotation, setMapRotation] = useState(0);
   const mapGroupRef = useRef();
@@ -683,28 +684,7 @@ export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotat
         {/* Wall Gates */}
         <GateGroup gateName="gate1" isActive={selectedGate === "gate1"} name="wall-area1" position={[-1, 35, 137]} rotation={[0, 0, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-         <Html
-  position={[0, 0, 30]}
-  center
-  occlude
-  zIndexRange={[100, 0]}
-  distanceFactor={90}
->
-  <div className="
-    overflow-hidden
-    rounded-lg
-    bg-[#121212] bg-opacity-90
-    shadow-lg
-    ring-1 ring-black ring-opacity-5
-    backdrop-blur-sm
-    px-4 py-2
-  ">
-    <span className="text-white text-2xl font-bold whitespace-nowrap">
-      Gate 1
-    </span>
-  </div>
-</Html>
-          
+          <GateName gateName={"Gate 1"} />
           <HoverPointer
             name="stoneThrower"
             model={stoneThrower}
@@ -748,28 +728,7 @@ export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotat
 
         <GateGroup gateName="gate2" isActive={selectedGate === "gate2"} name="wall-area2" position={[117, 35, 71.5]} rotation={[0, Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-          <Html
-  position={[0, 0, 30]}
-  center
-  occlude
-  zIndexRange={[100, 0]}
-  distanceFactor={90}
->
-  <div className="
-    overflow-hidden
-    rounded-lg
-    bg-[#121212] bg-opacity-90
-    shadow-lg
-    ring-1 ring-black ring-opacity-5
-    backdrop-blur-sm
-    px-4 py-2
-  ">
-    <span className="text-white text-2xl font-bold whitespace-nowrap">
-      Gate 2
-    </span>
-  </div>
-</Html>
-          
+          <GateName gateName={"Gate 2"} />
           <HoverPointer
             name="stoneThrower"
             model={stoneThrower}
@@ -813,30 +772,7 @@ export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotat
 
         <GateGroup gateName="gate3" isActive={selectedGate === "gate3"} name="wall-area3" position={[117, 35, -65]} rotation={[0, 2 * Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-    
-
-            <Html
-  position={[0, 0, 30]}
-  center
-  occlude
-  zIndexRange={[100, 0]}
-  distanceFactor={90}
->
-  <div className="
-    overflow-hidden
-    rounded-lg
-    bg-[#121212] bg-opacity-90
-    shadow-lg
-    ring-1 ring-black ring-opacity-5
-    backdrop-blur-sm
-    px-4 py-2
-  ">
-       <span className="text-white text-2xl font-bold whitespace-nowrap">
-      Gate 3
-    </span>
-  </div>
-</Html>
-          
+          <GateName gateName={"Gate 3"} />
           <HoverPointer
             name="stoneThrower"
             model={stoneThrower}
@@ -881,29 +817,7 @@ export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotat
         <GateGroup gateName="gate4" isActive={selectedGate === "gate4"} name="wall-area4" position={[1, 35, -137]} rotation={[0, Math.PI, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
 
-<Html
-  position={[0, 0, 30]}
-  center
-  occlude
-  zIndexRange={[100, 0]}
-  distanceFactor={90}
->
-  <div className="
-    overflow-hidden
-    rounded-lg
-    bg-[#121212] bg-opacity-90
-    shadow-lg
-    ring-1 ring-black ring-opacity-5
-    backdrop-blur-sm
-    px-4 py-2
-  ">
-       <span className="text-white text-2xl font-bold whitespace-nowrap">
-      Gate 4
-    </span>
-  </div>
-</Html>
-
-          
+          <GateName gateName={"Gate 4"} />
           <HoverPointer
             name="stoneThrower"
             model={stoneThrower}
@@ -947,28 +861,9 @@ export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotat
 
         <GateGroup gateName="gate5" isActive={selectedGate === "gate5"} name="wall-area5" position={[-117, 35, -71.5]} rotation={[0, 4 * Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-        <Html
-  position={[0, 0, 30]}
-  center
-  occlude
-  zIndexRange={[100, 0]}
-  distanceFactor={90}
->
-  <div className="
-    overflow-hidden
-    rounded-lg
-    bg-[#121212] bg-opacity-90
-    shadow-lg
-    ring-1 ring-black ring-opacity-5
-    backdrop-blur-sm
-    px-4 py-2
-  ">
-       <span className="text-white text-2xl font-bold whitespace-nowrap">
-      Gate 5
-    </span>
-  </div>
-</Html>
-          
+          <GateName gateName={"Gate 5"} />
+
+
           <HoverPointer
             name="stoneThrower"
             model={stoneThrower}
@@ -1012,28 +907,8 @@ export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotat
 
         <GateGroup gateName="gate6" isActive={selectedGate === "gate6"} name="wall-area6" position={[-117, 35, 65]} rotation={[0, 5 * Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-        <Html
-  position={[0, 0, 30]}
-  center
-  occlude
-  zIndexRange={[100, 0]}
-  distanceFactor={90}
->
-  <div className="
-    overflow-hidden
-    rounded-lg
-    bg-[#121212] bg-opacity-90
-    shadow-lg
-    ring-1 ring-black ring-opacity-5
-    backdrop-blur-sm
-    px-4 py-2
-  ">
-       <span className="text-white text-2xl font-bold whitespace-nowrap">
-      Gate 6
-    </span>
-  </div>
-</Html>
-          
+          <GateName gateName={"Gate 6"} />
+
           <HoverPointer
             name="stoneThrower"
             model={stoneThrower}
