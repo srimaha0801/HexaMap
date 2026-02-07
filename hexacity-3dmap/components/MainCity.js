@@ -12,6 +12,7 @@ export default function MainCity() {
   const [selectedGate, setSelectedGate] = useState("gate1");
   const [mapRotation, setMapRotation] = useState(0);
   const [selectedTower, setSelectedTower] = useState(null);
+  const [selectedDefense, setSelectedDefense] = useState(null);
 
   useEffect(() => {
     if (ref.current) {
@@ -136,6 +137,43 @@ export default function MainCity() {
         </div>
       )}
 
+      {/* Mobile Defense Popover at bottom */}
+      {selectedDefense && (
+        <div className="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-[2000] w-[90%] max-w-sm">
+          <div className="relative">
+            <button
+              onClick={() => setSelectedDefense(null)}
+              className="absolute -top-2 -right-2 z-10 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold shadow-lg"
+            >
+              ×
+            </button>
+            <div className="w-full rounded-xl border border-blue-400/40 bg-zinc-900/95 backdrop-blur-sm p-4 shadow-[0_0_20px_rgba(59,130,246,0.5)]">
+              <h2 className="text-center text-lg font-semibold text-blue-300 mb-3">
+                {selectedDefense.label}
+              </h2>
+              <div className="space-y-2 text-sm text-gray-200">
+                <div className="flex justify-between">
+                  <span className="flex items-center gap-2 text-yellow-400">Level</span>
+                  <span className="font-semibold">{selectedDefense.level}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="flex items-center gap-2 text-purple-500">Type</span>
+                  <span className="font-semibold">{selectedDefense.type}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="flex items-center gap-2 text-red-400">Attack</span>
+                  <span className="font-semibold">{selectedDefense.attack}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="flex items-center gap-2 text-green-400">Defence</span>
+                  <span className="font-semibold">{selectedDefense.defence}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
 
     <div className="w-full h-[300px] md:h-[600px] bg-black relative">      
 
@@ -154,6 +192,7 @@ export default function MainCity() {
             setMapRotation={setMapRotation} 
             setSelectedGate={setSelectedGate}
             onTowerClick={setSelectedTower}
+            onDefenseClick={setSelectedDefense}
           />
 
           {/* Center Crystal */}

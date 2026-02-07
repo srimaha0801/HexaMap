@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import Building from "./Building";
 import HexagonCompass from "./HexagonCompass";
 import TowerHoverPointer from "./TowerHoverPointer";
+import HoverPointer from "./HoverPointer";
 import { pointersMap } from "./util";
 
 // Component to handle gate opacity
-function GateGroup({ gateName, isActive, children, ...props }) {
+function GateGroup({ gateName, isActive, children, onDefenseClick, stoneThrower, ballista, ...props }) {
   const groupRef = useRef();
 
   useFrame(() => {
@@ -436,7 +437,7 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
   );
 }
 
-export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotation,setMapRotation, onTowerClick }) {
+export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotation,setMapRotation, onTowerClick, onDefenseClick }) {
   // const [selectedGate, setSelectedGate] = useState("gate1");
   // const [mapRotation, setMapRotation] = useState(0);
   const mapGroupRef = useRef();
@@ -680,58 +681,398 @@ export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotat
           isActive={isHtmlVisible("building-area6")} barrack={barrack} darkTower={darkTower} lightTower={lightTower} fireTower={fireTower} waterTower={waterTower} windTower={windTower} onTowerClick={onTowerClick} />
 
         {/* Wall Gates */}
-        <GateGroup gateName="gate1" isActive={selectedGate === "gate1"} name="wall-area1" position={[-1, 35, 137]} rotation={[0, 0, 0]} scale={1}>
+        <GateGroup gateName="gate1" isActive={selectedGate === "gate1"} name="wall-area1" position={[-1, 35, 137]} rotation={[0, 0, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-          <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
-            outlineWidth={0.08} outlineColor="black" billboard>Gate 1</Text>
-          <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
-          <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
-          <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
+         <Html
+  position={[0, 0, 30]}
+  center
+  occlude
+  zIndexRange={[100, 0]}
+  distanceFactor={90}
+>
+  <div className="
+    overflow-hidden
+    rounded-lg
+    bg-[#121212] bg-opacity-90
+    shadow-lg
+    ring-1 ring-black ring-opacity-5
+    backdrop-blur-sm
+    px-4 py-2
+  ">
+    <span className="text-white text-2xl font-bold whitespace-nowrap">
+      Gate 1
+    </span>
+  </div>
+</Html>
+          
+          <HoverPointer
+            name="stoneThrower"
+            model={stoneThrower}
+            position={[0, 8, 0]}
+            isActive={selectedGate === "gate1"}
+            label="Stone Thrower"
+            pointerImg="/Storm_3_green.webp"
+            level={3}
+            type="Siege"
+            attack={85}
+            defence={30}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista1"
+            model={ballista}
+            position={[-17, 7, 0]}
+            isActive={selectedGate === "gate1"}
+            label="Ballista Left"
+            pointerImg="/FIRE_3_red.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista2"
+            model={ballista}
+            position={[17, 7, 0]}
+            isActive={selectedGate === "gate1"}
+            label="Ballista Right"
+            pointerImg="/FIRE_3_red.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
         </GateGroup>
 
-        <GateGroup gateName="gate2" isActive={selectedGate === "gate2"} name="wall-area2" position={[117, 35, 71.5]} rotation={[0, Math.PI / 3, 0]} scale={1}>
+        <GateGroup gateName="gate2" isActive={selectedGate === "gate2"} name="wall-area2" position={[117, 35, 71.5]} rotation={[0, Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-          <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
-            outlineWidth={0.08} outlineColor="black" billboard>Gate 2</Text>
-          <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
-          <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
-          <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
+          <Html
+  position={[0, 0, 30]}
+  center
+  occlude
+  zIndexRange={[100, 0]}
+  distanceFactor={90}
+>
+  <div className="
+    overflow-hidden
+    rounded-lg
+    bg-[#121212] bg-opacity-90
+    shadow-lg
+    ring-1 ring-black ring-opacity-5
+    backdrop-blur-sm
+    px-4 py-2
+  ">
+    <span className="text-white text-2xl font-bold whitespace-nowrap">
+      Gate 2
+    </span>
+  </div>
+</Html>
+          
+          <HoverPointer
+            name="stoneThrower"
+            model={stoneThrower}
+            position={[0, 8, 0]}
+            isActive={selectedGate === "gate2"}
+            label="Stone Thrower"
+            pointerImg="/Water-3-blue.webp"
+            level={3}
+            type="Siege"
+            attack={85}
+            defence={30}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista1"
+            model={ballista}
+            position={[-17, 7, 0]}
+            isActive={selectedGate === "gate2"}
+            label="Ballista Left"
+            pointerImg="/Light_3_yellow.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista2"
+            model={ballista}
+            position={[17, 7, 0]}
+            isActive={selectedGate === "gate2"}
+            label="Ballista Right"
+            pointerImg="/Light_3_yellow.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
         </GateGroup>
 
-        <GateGroup gateName="gate3" isActive={selectedGate === "gate3"} name="wall-area3" position={[117, 35, -65]} rotation={[0, 2 * Math.PI / 3, 0]} scale={1}>
+        <GateGroup gateName="gate3" isActive={selectedGate === "gate3"} name="wall-area3" position={[117, 35, -65]} rotation={[0, 2 * Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-          <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
-            outlineWidth={0.08} outlineColor="black" billboard>Gate 3</Text>
-          <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
-          <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
-          <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
+    
+
+            <Html
+  position={[0, 0, 30]}
+  center
+  occlude
+  zIndexRange={[100, 0]}
+  distanceFactor={90}
+>
+  <div className="
+    overflow-hidden
+    rounded-lg
+    bg-[#121212] bg-opacity-90
+    shadow-lg
+    ring-1 ring-black ring-opacity-5
+    backdrop-blur-sm
+    px-4 py-2
+  ">
+       <span className="text-white text-2xl font-bold whitespace-nowrap">
+      Gate 3
+    </span>
+  </div>
+</Html>
+          
+          <HoverPointer
+            name="stoneThrower"
+            model={stoneThrower}
+            position={[0, 8, 0]}
+            isActive={selectedGate === "gate3"}
+            label="Stone Thrower"
+            pointerImg="/Dark_1_purple.webp"
+            level={3}
+            type="Siege"
+            attack={85}
+            defence={30}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista1"
+            model={ballista}
+            position={[-17, 7, 0]}
+            isActive={selectedGate === "gate3"}
+            label="Ballista Left"
+            pointerImg="/Water_2_blue.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista2"
+            model={ballista}
+            position={[17, 7, 0]}
+            isActive={selectedGate === "gate3"}
+            label="Ballista Right"
+            pointerImg="/Water_2_blue.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
         </GateGroup>
 
-        <GateGroup gateName="gate4" isActive={selectedGate === "gate4"} name="wall-area4" position={[1, 35, -137]} rotation={[0, Math.PI, 0]} scale={1}>
+        <GateGroup gateName="gate4" isActive={selectedGate === "gate4"} name="wall-area4" position={[1, 35, -137]} rotation={[0, Math.PI, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-          <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
-            outlineWidth={0.08} outlineColor="black" billboard>Gate 4</Text>
-          <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
-          <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
-          <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
+
+<Html
+  position={[0, 0, 30]}
+  center
+  occlude
+  zIndexRange={[100, 0]}
+  distanceFactor={90}
+>
+  <div className="
+    overflow-hidden
+    rounded-lg
+    bg-[#121212] bg-opacity-90
+    shadow-lg
+    ring-1 ring-black ring-opacity-5
+    backdrop-blur-sm
+    px-4 py-2
+  ">
+       <span className="text-white text-2xl font-bold whitespace-nowrap">
+      Gate 4
+    </span>
+  </div>
+</Html>
+
+          
+          <HoverPointer
+            name="stoneThrower"
+            model={stoneThrower}
+            position={[0, 8, 0]}
+            isActive={selectedGate === "gate4"}
+            label="Stone Thrower"
+            pointerImg="/FIRE_3_red.webp"
+            level={3}
+            type="Siege"
+            attack={85}
+            defence={30}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista1"
+            model={ballista}
+            position={[-17, 7, 0]}
+            isActive={selectedGate === "gate4"}
+            label="Ballista Left"
+            pointerImg="/Light_2_yellow.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista2"
+            model={ballista}
+            position={[17, 7, 0]}
+            isActive={selectedGate === "gate4"}
+            label="Ballista Right"
+            pointerImg="/Light_2_yellow.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
         </GateGroup>
 
-        <GateGroup gateName="gate5" isActive={selectedGate === "gate5"} name="wall-area5" position={[-117, 35, -71.5]} rotation={[0, 4 * Math.PI / 3, 0]} scale={1}>
+        <GateGroup gateName="gate5" isActive={selectedGate === "gate5"} name="wall-area5" position={[-117, 35, -71.5]} rotation={[0, 4 * Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-          <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
-            outlineWidth={0.08} outlineColor="black" billboard>Gate 5</Text>
-          <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
-          <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
-          <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
+        <Html
+  position={[0, 0, 30]}
+  center
+  occlude
+  zIndexRange={[100, 0]}
+  distanceFactor={90}
+>
+  <div className="
+    overflow-hidden
+    rounded-lg
+    bg-[#121212] bg-opacity-90
+    shadow-lg
+    ring-1 ring-black ring-opacity-5
+    backdrop-blur-sm
+    px-4 py-2
+  ">
+       <span className="text-white text-2xl font-bold whitespace-nowrap">
+      Gate 5
+    </span>
+  </div>
+</Html>
+          
+          <HoverPointer
+            name="stoneThrower"
+            model={stoneThrower}
+            position={[0, 8, 0]}
+            isActive={selectedGate === "gate5"}
+            label="Stone Thrower"
+            pointerImg="/Storm_3_green.webp"
+            level={3}
+            type="Siege"
+            attack={85}
+            defence={30}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista1"
+            model={ballista}
+            position={[-17, 7, 0]}
+            isActive={selectedGate === "gate5"}
+            label="Ballista Left"
+            pointerImg="/Water-3-blue.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista2"
+            model={ballista}
+            position={[17, 7, 0]}
+            isActive={selectedGate === "gate5"}
+            label="Ballista Right"
+            pointerImg="/Water-3-blue.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
         </GateGroup>
 
-        <GateGroup gateName="gate6" isActive={selectedGate === "gate6"} name="wall-area6" position={[-117, 35, 65]} rotation={[0, 5 * Math.PI / 3, 0]} scale={1}>
+        <GateGroup gateName="gate6" isActive={selectedGate === "gate6"} name="wall-area6" position={[-117, 35, 65]} rotation={[0, 5 * Math.PI / 3, 0]} scale={1} stoneThrower={stoneThrower} ballista={ballista} onDefenseClick={onDefenseClick}>
           <primitive object={wallGate.scene.clone()} scale={1} />
-          <Text position={[0, 0, 30]} fontSize={3} color="white" anchorX="center" anchorY="middle"
-            outlineWidth={0.08} outlineColor="black" billboard>Gate 6</Text>
-          <primitive name="stoneThrower" object={stoneThrower.scene.clone()} scale={1} position={[0, 8, 0]} />
-          <primitive name="ballista1" object={ballista.scene.clone()} scale={1} position={[-17, 7, 0]} />
-          <primitive name="ballista2" object={ballista.scene.clone()} scale={1} position={[17, 7, 0]} />
+        <Html
+  position={[0, 0, 30]}
+  center
+  occlude
+  zIndexRange={[100, 0]}
+  distanceFactor={90}
+>
+  <div className="
+    overflow-hidden
+    rounded-lg
+    bg-[#121212] bg-opacity-90
+    shadow-lg
+    ring-1 ring-black ring-opacity-5
+    backdrop-blur-sm
+    px-4 py-2
+  ">
+       <span className="text-white text-2xl font-bold whitespace-nowrap">
+      Gate 6
+    </span>
+  </div>
+</Html>
+          
+          <HoverPointer
+            name="stoneThrower"
+            model={stoneThrower}
+            position={[0, 8, 0]}
+            isActive={selectedGate === "gate6"}
+            label="Stone Thrower"
+            pointerImg="/Light_1_yellow.webp"
+            level={3}
+            type="Siege"
+            attack={85}
+            defence={30}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista1"
+            model={ballista}
+            position={[-17, 7, 0]}
+            isActive={selectedGate === "gate6"}
+            label="Ballista Left"
+            pointerImg="/Dark_1_purple.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
+          <HoverPointer
+            name="ballista2"
+            model={ballista}
+            position={[17, 7, 0]}
+            isActive={selectedGate === "gate6"}
+            label="Ballista Right"
+            pointerImg="/Dark_1_purple.webp"
+            level={2}
+            type="Artillery"
+            attack={65}
+            defence={35}
+            onDefenseClick={onDefenseClick}
+          />
         </GateGroup>
       </group>
     </>
