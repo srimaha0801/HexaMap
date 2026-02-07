@@ -2,7 +2,9 @@ import { Html, Text, useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import Building from "./Building";
+import HexagonCompass from "./HexagonCompass";
 import TowerHoverPointer from "./TowerHoverPointer";
+import { pointersMap } from "./util";
 
 // Component to handle gate opacity
 function GateGroup({ gateName, isActive, children, ...props }) {
@@ -407,9 +409,9 @@ function BuildingArea({ areaName, position, rotation, isActive, barrack, darkTow
   );
 }
 
-export default function Map({ controlsRef }) {
-  const [selectedGate, setSelectedGate] = useState("gate1");
-  const [mapRotation, setMapRotation] = useState(0);
+export default function Map({ controlsRef, selectedGate,setSelectedGate,mapRotation,setMapRotation }) {
+  // const [selectedGate, setSelectedGate] = useState("gate1");
+  // const [mapRotation, setMapRotation] = useState(0);
   const mapGroupRef = useRef();
 
   const { scene } = useGLTF("/models/map.glb");
@@ -425,31 +427,23 @@ export default function Map({ controlsRef }) {
 
   const { controls } = useThree();
 
-  const pointersMap = {
-    gate1: ["building-area6", "building-area1", "golem-1"],
-    gate2: ["building-area1", "building-area2", "golem-2"],
-    gate3: ["building-area2", "building-area3", "golem-3"],
-    gate4: ["building-area3", "building-area4", "golem-4"],
-    gate5: ["building-area4", "building-area5", "golem-5"],
-    gate6: ["building-area5", "building-area6", "golem-6"],
-  }
-  // Navigate to next gate (rotate by 60 degrees)
-  const handleNextGate = () => {
-    const gates = Object.keys(pointersMap);
-    const currentIndex = gates.indexOf(selectedGate);
-    const nextIndex = (currentIndex + 1) % gates.length;
-    setSelectedGate(gates[nextIndex]);
-    setMapRotation(prev => prev - Math.PI / 3); // Subtract 60 degrees for continuous rotation
-  };
+  // // Navigate to next gate (rotate by 60 degrees)
+  // const handleNextGate = () => {
+  //   const gates = Object.keys(pointersMap);
+  //   const currentIndex = gates.indexOf(selectedGate);
+  //   const nextIndex = (currentIndex + 1) % gates.length;
+  //   setSelectedGate(gates[nextIndex]);
+  //   setMapRotation(prev => prev - Math.PI / 3); // Subtract 60 degrees for continuous rotation
+  // };
 
-  // Navigate to previous gate (rotate by -60 degrees)
-  const handlePrevGate = () => {
-    const gates = Object.keys(pointersMap);
-    const currentIndex = gates.indexOf(selectedGate);
-    const prevIndex = (currentIndex - 1 + gates.length) % gates.length;
-    setSelectedGate(gates[prevIndex]);
-    setMapRotation(prev => prev + Math.PI / 3); // Add 60 degrees for continuous rotation
-  };
+  // // Navigate to previous gate (rotate by -60 degrees)
+  // const handlePrevGate = () => {
+  //   const gates = Object.keys(pointersMap);
+  //   const currentIndex = gates.indexOf(selectedGate);
+  //   const prevIndex = (currentIndex - 1 + gates.length) % gates.length;
+  //   setSelectedGate(gates[prevIndex]);
+  //   setMapRotation(prev => prev + Math.PI / 3); // Add 60 degrees for continuous rotation
+  // };
 
   // Animate map rotation when gate changes
   useEffect(() => {
@@ -522,8 +516,11 @@ export default function Map({ controlsRef }) {
 
   return (
     <>
+      {/* Hexagon Compass Overlay */}
+
+
       {/* Navigation Buttons */}
-      <Html fullscreen>
+      {/* <Html fullscreen>
         <div style={{ position: 'absolute', top: '50%', left: '20px', transform: 'translateY(-50%)', zIndex: 1000 }}>
           <button onClick={handlePrevGate} style={{
             padding: '15px 20px', fontSize: '24px', backgroundColor: 'rgba(59, 130, 246, 0.9)',
@@ -538,13 +535,7 @@ export default function Map({ controlsRef }) {
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
           }}>▶</button>
         </div>
-        <div style={{ position: 'absolute', top: '20px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
-          <div style={{
-            padding: '10px 20px', fontSize: '18px', backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            color: 'white', borderRadius: '8px', fontWeight: 'bold',
-          }}>{selectedGate.toUpperCase()}</div>
-        </div>
-      </Html>
+      </Html> */}
 
       {/* Main rotating map group */}
       <group ref={mapGroupRef}>
